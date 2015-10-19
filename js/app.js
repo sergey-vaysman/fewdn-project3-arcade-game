@@ -1,23 +1,35 @@
 // Enemies our player must avoid
-var Enemy = function(y) {
+var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
+    this.x = x;
     this.y = y;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    this.x += 50 * dt;
+    var rand = Math.random();
+    if (rand < 0.2) {
+        this.x += -1 * dt * Math.random(10000);
+    } else if (rand < 0.6) {
+        this.x += 7 * Math.random(10000) + dt;
+    } else {
+        this.x += 15 * Math.random(10000) + dt * Math.random(10000);
+    }
+    if (this.x > (Player.maxX + Enemy.distance)) {
+        this.x = Enemy.distance * (-1)/2;
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
 };
+
+Enemy.distance = 100;
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -60,10 +72,12 @@ Player.defaultY = 380;
 
 Player.dx = 100;
 Player.dy = 80;
+
 Player.minY = -20;
 Player.maxY = 380;
 Player.minX = 0;
 Player.maxX = 400;
+
 Player.winY = -20;
 
 Player.prototype.checkWin = function() {
@@ -87,8 +101,6 @@ Player.prototype.checkBorders = function(keyId) {
             return false;
         }
     }
-
-    console.log("returns true");
     return true;
 }
 
@@ -96,9 +108,9 @@ Player.prototype.checkBorders = function(keyId) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-allEnemies[0] = new Enemy(60);
-allEnemies[1] = new Enemy(140);
-allEnemies[2] = new Enemy(220);
+allEnemies[0] = new Enemy(0, 60);
+allEnemies[1] = new Enemy(Math.random() * 100 * (-1), 140);
+allEnemies[2] = new Enemy(Math.random() * 100 * (-1), 220);
 
 var player = new Player();
 
