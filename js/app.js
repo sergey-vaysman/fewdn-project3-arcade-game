@@ -30,19 +30,26 @@ Enemy.prototype.update = function(dt) {
 };
 
 Enemy.distance = 100;
+Enemy.strikeDistance = 40;
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    this.checkStrike(player);
 };
+
+Enemy.prototype.checkStrike = function(player) {
+    if ((this.y === player.y) && Math.abs(this.x - player.x) < Enemy.strikeDistance) {
+        player.moveToStart();
+    }
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 Player = function() {
     this.sprite = "images/char-boy.png";
-    this.x = Player.defaultX;
-    this.y = Player.defaultY;
+    this.moveToStart();
 }
 
 Player.prototype.update = function() {
@@ -82,9 +89,13 @@ Player.winY = -20;
 
 Player.prototype.checkWin = function() {
     if (this.y === Player.winY) {
-        this.x = Player.defaultX;
-        this.y = Player.defaultY;
+        this.moveToStart();
     }
+}
+
+Player.prototype.moveToStart = function() {
+    this.x = Player.defaultX;
+    this.y = Player.defaultY;
 }
 
 Player.prototype.checkBorders = function(keyId) {
