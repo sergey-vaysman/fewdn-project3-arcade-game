@@ -21,7 +21,8 @@ Enemy.prototype.update = function(dt) {
     } else {
         this.x += 15 * Math.random(10000) + dt * Math.random(10000);
     }
-    if (this.x > (Player.maxX + Enemy.distance)) {
+    
+    if (this.x > (Player.prototype.maxX + Enemy.distance)) {
         this.x = Enemy.distance * (-1)/2;
     }
     // You should multiply any movement by the dt parameter
@@ -41,6 +42,7 @@ Enemy.prototype.render = function() {
 Enemy.prototype.checkStrike = function(player) {
     if ((this.y === player.y) && Math.abs(this.x - player.x) < Enemy.strikeDistance) {
         player.moveToStart();
+        player.score = 0;
     }
 }
 
@@ -50,6 +52,7 @@ Enemy.prototype.checkStrike = function(player) {
 Player = function() {
     this.sprite = "images/char-boy.png";
     this.moveToStart();
+    this.score = 0;
 }
 
 Player.prototype.update = function() {
@@ -62,58 +65,71 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(keyId) {
     if (this.checkBorders(keyId)) {
         if (keyId === 'up') {
-            this.y -= Player.dy;
+            this.y -= this.dy;
             this.checkWin();
         } else if (keyId === 'down') {
-            this.y += Player.dy;
+            this.y += this.dy;
         } else if (keyId === 'left') {
-            this.x -= Player.dx;
+            this.x -= this.dx;
         } else if (keyId === 'right') {
-            this.x += Player.dx;
+            this.x += this.dx;
         }
     }
 }
 
-Player.defaultX = 200;
-Player.defaultY = 380;
+Player.prototype.defaultX = 200;
+Player.prototype.defaultY = 380;
 
-Player.dx = 100;
-Player.dy = 80;
+Player.prototype.dx = 100;
+Player.prototype.dy = 80;
 
-Player.minY = -20;
-Player.maxY = 380;
-Player.minX = 0;
-Player.maxX = 400;
+Player.prototype.minY = -20;
+Player.prototype.maxY = 380;
+Player.prototype.minX = 0;
+Player.prototype.maxX = 400;
 
-Player.winY = -20;
+Player.prototype.winY = -20;
 
 Player.prototype.checkWin = function() {
-    if (this.y === Player.winY) {
+    if (this.y === this.winY) {
+        this.score++;
         this.moveToStart();
     }
 }
 
 Player.prototype.moveToStart = function() {
-    this.x = Player.defaultX;
-    this.y = Player.defaultY;
+    this.x = this.defaultX;
+    this.y = this.defaultY;
 }
 
 Player.prototype.checkBorders = function(keyId) {
     if (keyId === 'down') {
-        if (Math.abs(this.y - Player.maxY) < Player.dy) {
+        if (Math.abs(this.y - this.maxY) < this.dy) {
             return false;
         }
     } else if (keyId === 'left') {
-        if ((this.x - Player.dx) < Player.minX) {
+        if ((this.x - this.dx) < this.minX) {
             return false;
         }
     } else if (keyId === 'right') {
-        if (Math.abs(this.x - Player.maxX) < Player.dx) {
+        if (Math.abs(this.x - this.maxX) < this.dx) {
             return false;
         }
     }
     return true;
+};
+
+var Score = function() {
+};
+
+Score.prototype.update = function(player) {
+    ctx.fillStyle='red';
+    ctx.font = '30px Serif';
+    ctx.fillText('Highscore: ' + player.score, 50, 100);
 }
+
+var score = new Score();
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
