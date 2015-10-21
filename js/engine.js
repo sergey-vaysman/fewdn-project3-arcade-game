@@ -151,9 +151,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
-        score.update(player);
     }
 
     /* This function does nothing but it could have been a good place to
