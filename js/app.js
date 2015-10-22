@@ -53,7 +53,7 @@ Enemy.prototype.update = function(dt) {
  */
 Enemy.prototype.isGone = function() {
     return this.x > (Player.prototype.maxX + this.distance);
-}
+};
 
 /**
  * @description Max distance from the east of screen
@@ -81,7 +81,7 @@ Enemy.prototype.checkStrike = function(player) {
         player.moveToStart();
         player.score = 0;
     }
-}
+};
 
 /**
  * @description the minimum possible distance
@@ -95,7 +95,7 @@ Enemy.prototype.strikeDistance = 40;
  * @description Utils object for different utility operations (calculating e.t.c.)
  */
 var Utils = function() {
-}
+};
 
 /**
  * @description Calculates new position for a current enemy
@@ -112,7 +112,7 @@ Utils.prototype.enemySpeed = function(enemy, dt) {
     } else {
         return enemy.x += 15 * Math.random(10000) + dt * Math.random(10000);
     }
-}
+};
 
 var utils = new Utils();
 
@@ -124,7 +124,7 @@ Player = function() {
     this.sprite = "images/char-boy.png";
     this.moveToStart();
     this.score = 0;
-}
+};
 
 /**
  * @description updates player visible data
@@ -133,7 +133,7 @@ Player = function() {
 Player.prototype.update = function() {
     score.update(player);
     //TODO: change different sprites of player based on its result (x10, x20 e.t.c.)
-}
+};
 
 /**
  * @description render the player on the game canvas
@@ -141,7 +141,7 @@ Player.prototype.update = function() {
  */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 /**
  * @description handles an user input and move the player
@@ -161,7 +161,7 @@ Player.prototype.handleInput = function(keyId) {
             this.x += this.dx;
         }
     }
-}
+};
 
 /**
  * @description Checks if the users should move or it at the canvas border
@@ -247,7 +247,7 @@ Player.prototype.checkWin = function() {
         this.score++;
         this.moveToStart();
     }
-}
+};
 
 /**
  * @description Moves the player to start
@@ -256,7 +256,7 @@ Player.prototype.checkWin = function() {
 Player.prototype.moveToStart = function() {
     this.x = this.defaultX;
     this.y = this.defaultY;
-}
+};
 
 /**
  * @description Represents score output
@@ -288,7 +288,7 @@ Score.prototype.update = function(player) {
     ctx.font = this.scoreFont;
     this.updateTextPosition(player.score);
     ctx.fillText(player.score, this.x, this.y);
-}
+};
 
 /**
  * @description Updates score position centered on the background
@@ -296,7 +296,7 @@ Score.prototype.update = function(player) {
  * @return {undefined}
  */
 Score.prototype.updateTextPosition = function(score) {
-    if (score == 0) {
+    if (score === 0) {
         this.x = this.defaultX;
     } else if (score < 10) {
         this.increasingScore = true;
@@ -307,9 +307,9 @@ Score.prototype.updateTextPosition = function(score) {
         this.increasingScore = true;
     } else if (score == 100 && this.increasingScore) {
         this.x -=5;
-        this.increasingScore = false
+        this.increasingScore = false;
     }
-}
+};
 
 Score.prototype.backgroundColor = 'black';
 Score.prototype.backgroundPosition = [430, 55];
